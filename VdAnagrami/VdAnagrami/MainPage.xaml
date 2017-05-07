@@ -3,9 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:VdAnagrami"
              x:Class="VdAnagrami.MainPage">
+    <StackLayout>
+	    <!--<Label Text="ITS Anagrams!" 
+               VerticalOptions="Center" 
+               HorizontalOptions="Center" x:Name="lblWelcome" />-->
 
-	<Label Text="Welcome to Xamarin Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
+        <Grid x:Name="gridAnagrams">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <!--<Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>-->
 
+        </Grid>
+    </StackLayout>
 </ContentPage>

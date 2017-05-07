@@ -96,6 +96,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FileHelper.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
@@ -153,7 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VdAnagrami\VdAnagrami.csproj">
-      <Project>{6a19d3b6-6647-4db3-ab8d-98186412d73c}</Project>
+      <Project>{1e64592e-9cea-40c7-89be-9e79a6e5142f}</Project>
       <Name>VdAnagrami</Name>
     </ProjectReference>
   </ItemGroup>
