@@ -4,9 +4,13 @@
              x:Class="VdAnagrami.AnagramPage">
     <StackLayout>
         <Label x:Name="lblAnagramQuestion" FontSize="Large" HorizontalOptions="Center" Margin="0,10,0,0"/>
-        <Label x:Name="lblAnagramAnswer" FontSize="Large" HorizontalOptions="Center" Margin="0,20,0,0"/>
+        
+        <StackLayout x:Name="AnswerList" Orientation="Horizontal" HorizontalOptions="Center" Spacing="0">
+        </StackLayout>
 
-        <Grid x:Name="gridAnagramKeyboardLetters">
+        <BoxView Color="Black" HorizontalOptions="Fill" HeightRequest="1" Margin="10,0"></BoxView>
+
+        <Grid x:Name="gridAnagramKeyboardLetters" Margin="0,20,0,0">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />

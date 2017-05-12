@@ -4,9 +4,9 @@
              xmlns:local="clr-namespace:VdAnagrami"
              x:Class="VdAnagrami.MainPage">
     <StackLayout>
-	    <!--<Label Text="ITS Anagrams!" 
+	    <Label Text="" 
                VerticalOptions="Center" 
-               HorizontalOptions="Center" x:Name="lblWelcome" />-->
+               HorizontalOptions="End"  Margin="0,10,10,0" x:Name="lblSolved"/>
 
         <Grid x:Name="gridAnagrams">
             <Grid.ColumnDefinitions>

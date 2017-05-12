@@ -27,7 +27,7 @@ namespace VdAnagrami
 
         private async Task InitializeAnagrams()
         {
-            var anagrams = await App.Database.GetAnagramsAsync();
+            var anagrams = await App.Database.Anagrams.GetAsync();
             
             var columnCount = gridAnagrams.ColumnDefinitions.Count;
             var rowCount = gridAnagrams.RowDefinitions.Count;
@@ -45,15 +45,18 @@ namespace VdAnagrami
             }
 
             gridAnagrams.Children.Clear();
-
+            int solvedCount = 0;
             for (int i = 0; i < anagrams.Count; i++)
             {
                 Image newImage = new Image();
-                
+
                 if (anagrams[i].Solved == false)
                     newImage.Source = ImageSource.FromResource("VdAnagrami.Images.Question.png");
                 else
+                {
+                    solvedCount++;
                     newImage.Source = ImageSource.FromResource("VdAnagrami.Images.Solved.png");
+                }
                 
                 newImage.GestureRecognizers.Add(new TapGestureRecognizer
                 {
@@ -67,27 +70,28 @@ namespace VdAnagrami
                  
                 gridAnagrams.Children.Add(newImage, i % columnCount, i / columnCount);
             }
+            lblSolved.Text = solvedCount + "/" + anagrams.Count;
         }
 
         private async Task InitialDatabase()
         {
-            var anagrams = await App.Database.GetAnagramsAsync();
+            var anagrams = await App.Database.Anagrams.GetAsync();
 
             if (anagrams.Count == 0)
             {
-                await App.Database.SaveItemAsync(new Model.Anagram("Ep: Trka zeke", "Petar Kekez"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Nit voćni nastavnik", "Ivan Konstantinvić"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Vaše tone", "Ante Ševo"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Klub račić", "Luka Brčić"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Vinil bića", "Ivan Bilić"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Od tamne fraze", "Frane Domazet"));
-                await App.Database.SaveItemAsync(new Model.Anagram("I kasom drljam..", "Damir Moskalj"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Tata! On nama lane!", "Antonela Matana"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Povećani vladar", "Andrea Pavlović"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Naći baru", "Ana Burić"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Ta mama dozrije", "Marija Domazet"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Ovakva noću pali!", "Paula Novaković"));
-                await App.Database.SaveItemAsync(new Model.Anagram("Naći mali dren", "Marina Lendić"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Ep: Trka zeke", "Petar Kekez"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Stavit vino na noćnik", "Ivan Konstantinović"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Vaše tone", "Ante Ševo"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Klub račić", "Luka Brčić"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Vinil bića", "Ivan Bilić"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Od tamne fraze", "Frane Domazet"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("I kasom drljam..", "Damir Moskalj"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Tata! On nama lane!", "Antonela Matana"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Povećani vladar", "Andrea Pavlović"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Naći baru", "Ana Burić"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Ta mama dozrije", "Marija Domazet"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Ovakva noću pali!", "Paula Novaković"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Naći mali dren", "Marina Lendić"));
 
                 //await App.Database.SaveItemAsync(new Model.Anagram("Štetna caka", "Ante Caktaš"));
                 //await App.Database.SaveItemAsync(new Model.Anagram("Friški pilot", "filip krišto"));
