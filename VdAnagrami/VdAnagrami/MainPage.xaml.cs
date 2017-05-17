@@ -27,6 +27,7 @@ namespace VdAnagrami
 
         private async Task InitializeAnagrams()
         {
+            gridAnagrams.Children.Clear();
             var anagrams = await App.Database.Anagrams.GetAsync();
             
             var columnCount = gridAnagrams.ColumnDefinitions.Count;
@@ -44,7 +45,7 @@ namespace VdAnagrami
                 }
             }
 
-            gridAnagrams.Children.Clear();
+            
             int solvedCount = 0;
             for (int i = 0; i < anagrams.Count; i++)
             {
