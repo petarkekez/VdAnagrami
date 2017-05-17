@@ -6,9 +6,9 @@
     <StackLayout>
 	    <Label Text="" 
                VerticalOptions="Center" 
-               HorizontalOptions="End"  Margin="0,10,10,0" x:Name="lblSolved"/>
+               HorizontalOptions="End"  Margin="0,10,20,0" x:Name="lblSolved"/>
 
-        <Grid x:Name="gridAnagrams">
+        <Grid x:Name="gridAnagrams" Margin="10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="*" />

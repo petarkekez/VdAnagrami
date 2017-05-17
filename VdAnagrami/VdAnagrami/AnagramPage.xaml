@@ -2,15 +2,22 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="VdAnagrami.AnagramPage">
-    <StackLayout>
-        <Label x:Name="lblAnagramQuestion" FontSize="Large" HorizontalOptions="Center" Margin="0,10,0,0"/>
-        
+    <StackLayout Spacing="0">
+        <Label Margin="0,10,0,0" Font="12" TextColor="Gray" HorizontalOptions="Center">anagram</Label>
+        <Label x:Name="lblAnagramQuestion" Font="Bold,30" HorizontalOptions="Center" Margin="0,0,0,0"/>
+
+        <Label Margin="0,40,0,0"  Font="12" TextColor="Gray" HorizontalOptions="Center">odgovor</Label>
         <StackLayout x:Name="AnswerList" Orientation="Horizontal" HorizontalOptions="Center" Spacing="0">
         </StackLayout>
-
+            
         <BoxView Color="Black" HorizontalOptions="Fill" HeightRequest="1" Margin="10,0"></BoxView>
 
-        <Grid x:Name="gridAnagramKeyboardLetters" Margin="0,20,0,0">
+        <Label x:Name="lblAnagramAnswerHead" Font="12" TextColor="Gray" Margin="0,10,0,0"  HorizontalOptions="Center" IsVisible="False">ispravno</Label>
+        <Label x:Name="lblAnagramAnswer" Font="Bold,16" HorizontalOptions="Center" Margin="0,0,0,0" IsVisible="False"/>
+
+        <BoxView VerticalOptions="FillAndExpand" />
+
+        <Grid x:Name="gridAnagramKeyboardLetters" Margin="10,20,10,10" >
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -24,7 +31,7 @@
             </Grid.ColumnDefinitions>
         </Grid>
         
-        <Grid x:Name="gridAnagramKeyboardSpecial">
+        <Grid x:Name="gridAnagramKeyboardSpecial" Margin="10,0,10,50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="*" />

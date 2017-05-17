@@ -70,7 +70,7 @@ namespace VdAnagrami
                  
                 gridAnagrams.Children.Add(newImage, i % columnCount, i / columnCount);
             }
-            lblSolved.Text = solvedCount + "/" + anagrams.Count;
+            lblSolved.Text = "Riješeno " + solvedCount + "/" + anagrams.Count;
         }
 
         private async Task InitialDatabase()

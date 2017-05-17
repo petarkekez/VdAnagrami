@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VdAnagrami.Model;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -15,12 +15,13 @@ namespace VdAnagrami
         private const double coursorHiddenOpacity = 0;
         private const double coursorVisibleOpacity = 1;
         private const string separator = "|";
-        private const string spaceLabelText = "   ";
+        private const string spaceLabelText = " ";
+        private const double spaceLabelWidth = 10;
 
         private string AnagramQuestion; // { get; set; }
         private string AnagramAnswer; // { get; set; }
         private int anagramId;
-
+        private bool isSolved;
 
         public AnagramPage(int id)
         {
@@ -29,34 +30,48 @@ namespace VdAnagrami
             Title = "Anagram";
 
             anagramId = id;
-            AnswerList.Children.Add(new Label() { Text = separator , Margin = 0});
-        }
+            AddInitialInputField();
 
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
+            var anagram = App.Database.Anagrams.GetAsync(anagramId).Result;
 
-            var anagram = await App.Database.Anagrams.GetAsync(anagramId);
-
+            isSolved = anagram.Solved;
             AnagramQuestion = anagram.Question;
             AnagramAnswer = anagram.Answer.ToUpper();
-            //lblAnagramAnswer.Text = String.Empty;
 
             InitializeForm();
+
+            if (anagram.Solved)
+            {
+                lblAnagramAnswerHead.IsVisible = true;
+                lblAnagramAnswer.Text = AnagramAnswer;
+                lblAnagramAnswer.IsVisible = true;
+            }
         }
 
+        private void AddInitialInputField()
+        {
+            var initialCursor = new Label() { Text = separator, Margin = 0 };
+            initialCursor.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command<Label>((Label label) => CursorClicked(label)),
+                CommandParameter = initialCursor,
+                NumberOfTapsRequired = 1
+            });
 
-        //public AnagramPage(string anagramQuestion, string anagramAnswer)
-        //{
-        //    InitializeComponent();
+            AnswerList.Children.Add(initialCursor);
 
-        //    AnagramQuestion = anagramQuestion;
-        //    AnagramAnswer = anagramAnswer.ToUpper();
-
-        //    InitializeForm();
-
-        //}
-
+            var characterLabel = new Label() { Text = spaceLabelText, Margin = 0 };
+            characterLabel.GestureRecognizers.Add(new TapGestureRecognizer
+            {
+                Command = new Command<Label>((Label label) => AnswerCharacterClicked(label)),
+                CommandParameter = characterLabel,
+                NumberOfTapsRequired = 1
+            });
+            if (characterLabel.Text == spaceLabelText)
+                characterLabel.WidthRequest = spaceLabelWidth;
+            AnswerList.Children.Insert(1, characterLabel);
+        }
+        
         private void InitializeForm()
         {
             lblAnagramQuestion.Text = AnagramQuestion;
@@ -99,7 +114,6 @@ namespace VdAnagrami
                 AddCharacterToAnswer(spaceLabelText);
 
                 await CheckAnswer();
-                //lblAnagramAnswer.Text = lblAnagramAnswer.Text + " ";
             }
             else if (btnKeyboard.Text == "<-")
             {
@@ -129,17 +143,20 @@ namespace VdAnagrami
 
         private async Task CheckAnswer()
         {
-            var tempAnswer = GetCurrentAnswer();
-
-            if (AnagramAnswer == tempAnswer)
+            if (isSolved == false)
             {
-                var anagram = await App.Database.Anagrams.GetAsync(anagramId);
-                anagram.Solved = true;
-                await App.Database.Anagrams.UpdateAsync(anagram);
+                var tempAnswer = GetCurrentAnswer();
 
-                await DisplayAlert("Točno", "Ispravano ste odgovorili!", "OK");
+                if (AnagramAnswer == tempAnswer)
+                {
+                    var anagram = await App.Database.Anagrams.GetAsync(anagramId);
+                    anagram.Solved = true;
+                    await App.Database.Anagrams.UpdateAsync(anagram);
 
-                await Navigation.PopAsync();
+                    await DisplayAlert("Točno odgovor", "\"" + AnagramAnswer + "\"", "OK");
+
+                    await Navigation.PopAsync();
+                }
             }
         }
 
@@ -172,7 +189,7 @@ namespace VdAnagrami
                 }
             }
 
-            return sb.ToString();
+            return sb.ToString().Trim();
         }
 
         private void AddCharacterToAnswer(string v)
@@ -184,14 +201,22 @@ namespace VdAnagrami
                 {
                     currentCharacter.Opacity = coursorHiddenOpacity;
 
-
-                    AnswerList.Children.Insert(i+1, new Label() { Text = v, Margin = 0 });
+                    var characterLabel = new Label() { Text = v, Margin = 0 };
+                    characterLabel.GestureRecognizers.Add(new TapGestureRecognizer
+                    {
+                        Command = new Command<Label>((Label label) => AnswerCharacterClicked(label)),
+                        CommandParameter = characterLabel,
+                        NumberOfTapsRequired = 1
+                    });
+                    if (characterLabel.Text == spaceLabelText)
+                        characterLabel.WidthRequest = spaceLabelWidth;
+                    AnswerList.Children.Insert(i+1, characterLabel);
+                    
 
                     var cursorLabel = new Label();
                     cursorLabel.Text = separator;
                     cursorLabel.Opacity = coursorVisibleOpacity;
                     cursorLabel.Margin = 0;
-                    //cursorLabel.BackgroundColor = Color.Red;
                     cursorLabel.GestureRecognizers.Add(new TapGestureRecognizer
                     {
                         Command = new Command<Label>((Label label) =>  CursorClicked(label)),
@@ -201,6 +226,25 @@ namespace VdAnagrami
 
                     AnswerList.Children.Insert(i + 2, cursorLabel);
                     i += 2;
+                }
+            }
+        }
+
+        private void AnswerCharacterClicked(Label answerCharacterLabel)
+        {
+            for (int i = 0; i < AnswerList.Children.Count; i++)
+            {
+                var currentCharacter = (Label)AnswerList.Children[i];
+                if (currentCharacter == answerCharacterLabel)
+                {
+                    if (i == 0)
+                        break;
+                    else
+                        AnswerList.Children[i - 1].Opacity = coursorVisibleOpacity;
+                }
+                else if (currentCharacter.Text == separator)
+                {
+                    AnswerList.Children[i].Opacity = coursorHiddenOpacity;
                 }
             }
         }
@@ -217,17 +261,6 @@ namespace VdAnagrami
             }
             label.Opacity = coursorVisibleOpacity;
         }
-
-        private void lblAnagramAnswer_Unfocused(object sender, FocusEventArgs e)
-        {
-            var bla = (Entry)sender;
-           //bla.
-        }
-
-        private void Editor_Unfocused(object sender, FocusEventArgs e)
-        {
-            var bla = (Editor)sender;
-            
-        }
+        
     }
 }
