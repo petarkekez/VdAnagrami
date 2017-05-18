@@ -9,7 +9,7 @@ using Xamarin.Forms.Xaml;
 
 namespace VdAnagrami
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
+    //[XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class AnagramPage : ContentPage
     {
         private const double coursorHiddenOpacity = 0;
@@ -50,7 +50,11 @@ namespace VdAnagrami
 
         private void AddInitialInputField()
         {
-            var initialCursor = new Label() { Text = separator, Margin = 0 };
+            var initialLabel = new Label() { Text = spaceLabelText, Margin = 0, TextColor = VdAnagrami.Resources.Colors.TextHighlight };
+            initialLabel.WidthRequest = spaceLabelWidth;
+            AnswerList.Children.Add(initialLabel);
+
+            var initialCursor = new Label() { Text = separator, Margin = 0, TextColor = VdAnagrami.Resources.Colors.TextHighlight };
             initialCursor.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command<Label>((Label label) => CursorClicked(label)),
@@ -60,7 +64,7 @@ namespace VdAnagrami
 
             AnswerList.Children.Add(initialCursor);
 
-            var characterLabel = new Label() { Text = spaceLabelText, Margin = 0 };
+            var characterLabel = new Label() { Text = spaceLabelText, Margin = 0, TextColor = VdAnagrami.Resources.Colors.TextHighlight };
             characterLabel.GestureRecognizers.Add(new TapGestureRecognizer
             {
                 Command = new Command<Label>((Label label) => AnswerCharacterClicked(label)),
@@ -69,7 +73,7 @@ namespace VdAnagrami
             });
             if (characterLabel.Text == spaceLabelText)
                 characterLabel.WidthRequest = spaceLabelWidth;
-            AnswerList.Children.Insert(1, characterLabel);
+            AnswerList.Children.Add(characterLabel);
         }
         
         private void InitializeForm()
@@ -101,6 +105,8 @@ namespace VdAnagrami
                 var btnLetter = new Button();
                 btnLetter.Text = anagramLetters[letterIndex].ToUpper();
                 btnLetter.Clicked += Keyboard_Clicked;
+                btnLetter.TextColor = VdAnagrami.Resources.Colors.TextHighlight;
+                btnLetter.BackgroundColor = VdAnagrami.Resources.Colors.ButtonBackground;
 
                 gridAnagramKeyboardLetters.Children.Add(btnLetter, letterIndex % columnsCount, letterIndex / columnsCount);
             }
@@ -118,7 +124,7 @@ namespace VdAnagrami
             else if (btnKeyboard.Text == "<-")
             {
                 var cursorIndex = GetCurrentCursorIndex();
-                if (cursorIndex > 0)
+                if (cursorIndex > 1)
                 {
                     var removedLetter = ((Label)AnswerList.Children[cursorIndex - 1]).Text;
                     foreach (Button item in gridAnagramKeyboardLetters.Children)
@@ -201,7 +207,7 @@ namespace VdAnagrami
                 {
                     currentCharacter.Opacity = coursorHiddenOpacity;
 
-                    var characterLabel = new Label() { Text = v, Margin = 0 };
+                    var characterLabel = new Label() { Text = v, Margin = 0, TextColor = VdAnagrami.Resources.Colors.TextHighlight };
                     characterLabel.GestureRecognizers.Add(new TapGestureRecognizer
                     {
                         Command = new Command<Label>((Label label) => AnswerCharacterClicked(label)),
@@ -217,6 +223,7 @@ namespace VdAnagrami
                     cursorLabel.Text = separator;
                     cursorLabel.Opacity = coursorVisibleOpacity;
                     cursorLabel.Margin = 0;
+                    cursorLabel.TextColor = VdAnagrami.Resources.Colors.TextHighlight;
                     cursorLabel.GestureRecognizers.Add(new TapGestureRecognizer
                     {
                         Command = new Command<Label>((Label label) =>  CursorClicked(label)),

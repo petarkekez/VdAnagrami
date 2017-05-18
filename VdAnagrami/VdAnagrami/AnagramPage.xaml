@@ -1,19 +1,21 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="VdAnagrami.AnagramPage">
+             xmlns:local="clr-namespace:VdAnagrami"
+             x:Class="VdAnagrami.AnagramPage"
+             BackgroundColor="{x:Static local:Resources.Colors.PageBackground}">
     <StackLayout Spacing="0">
-        <Label Margin="0,10,0,0" Font="12" TextColor="Gray" HorizontalOptions="Center">anagram</Label>
-        <Label x:Name="lblAnagramQuestion" Font="Bold,30" HorizontalOptions="Center" Margin="0,0,0,0"/>
+        <Label Margin="0,10,0,0" Font="12" HorizontalOptions="Center" TextColor="{x:Static local:Resources.Colors.Text}">anagram</Label>
+        <Label x:Name="lblAnagramQuestion" Font="Bold,30" HorizontalOptions="Center" Margin="0,0,0,0" TextColor="{x:Static local:Resources.Colors.TextHighlight}"/>
 
-        <Label Margin="0,40,0,0"  Font="12" TextColor="Gray" HorizontalOptions="Center">odgovor</Label>
+        <Label Margin="0,40,0,0"  Font="12" HorizontalOptions="Center" TextColor="{x:Static local:Resources.Colors.Text}">odgovor</Label>
         <StackLayout x:Name="AnswerList" Orientation="Horizontal" HorizontalOptions="Center" Spacing="0">
         </StackLayout>
-            
-        <BoxView Color="Black" HorizontalOptions="Fill" HeightRequest="1" Margin="10,0"></BoxView>
 
-        <Label x:Name="lblAnagramAnswerHead" Font="12" TextColor="Gray" Margin="0,10,0,0"  HorizontalOptions="Center" IsVisible="False">ispravno</Label>
-        <Label x:Name="lblAnagramAnswer" Font="Bold,16" HorizontalOptions="Center" Margin="0,0,0,0" IsVisible="False"/>
+        <BoxView HorizontalOptions="Fill" HeightRequest="1" Margin="10,1, 10, 0" BackgroundColor="{x:Static local:Resources.Colors.PageBackgroundHighlight}" Color="{x:Static local:Resources.Colors.PageBackgroundHighlight}"></BoxView>
+
+        <Label x:Name="lblAnagramAnswerHead" Font="12"  Margin="0,10,0,0"  HorizontalOptions="Center" IsVisible="False" TextColor="{x:Static local:Resources.Colors.Text}">ispravno</Label>
+        <Label x:Name="lblAnagramAnswer" Font="Bold,16" HorizontalOptions="Center" Margin="0,0,0,0" IsVisible="False" TextColor="{x:Static local:Resources.Colors.TextHighlight}"/>
 
         <BoxView VerticalOptions="FillAndExpand" />
 
@@ -31,7 +33,7 @@
             </Grid.ColumnDefinitions>
         </Grid>
         
-        <Grid x:Name="gridAnagramKeyboardSpecial" Margin="10,0,10,50">
+        <Grid x:Name="gridAnagramKeyboardSpecial" Margin="10,0,10,30">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*" />
                 <ColumnDefinition Width="*" />
@@ -40,8 +42,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <Button Text="Space" Grid.Row="0" Grid.Column="0" Clicked="Keyboard_Clicked" />
-            <Button Text="&lt;-" Grid.Row="0" Grid.Column="1" Clicked="Keyboard_Clicked"/>
+            <Button Text="Space" Grid.Row="0" Grid.Column="0" Clicked="Keyboard_Clicked" BackgroundColor="{x:Static local:Resources.Colors.ButtonBackground}" TextColor="{x:Static local:Resources.Colors.TextHighlight}"/>
+            <Button Text="&lt;-" Grid.Row="0" Grid.Column="1" Clicked="Keyboard_Clicked" BackgroundColor="{x:Static local:Resources.Colors.ButtonBackground}" TextColor="{x:Static local:Resources.Colors.TextHighlight}"/>
         </Grid>
     </StackLayout>
 </ContentPage>

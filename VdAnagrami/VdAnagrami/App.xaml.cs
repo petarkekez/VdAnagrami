@@ -17,7 +17,12 @@ namespace VdAnagrami
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage(new VdAnagrami.MainPage());
+            MainPage = new NavigationPage(new VdAnagrami.MainPage())
+            {
+                BarBackgroundColor = VdAnagrami.Resources.Colors.PageBackgroundHighlight,
+                BarTextColor = VdAnagrami.Resources.Colors.Text,
+                BackgroundColor = VdAnagrami.Resources.Colors.PageBackground
+            };
         }
 
         public static AnagramDatabase Database

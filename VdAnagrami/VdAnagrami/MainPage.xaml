@@ -2,11 +2,12 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:VdAnagrami"
-             x:Class="VdAnagrami.MainPage">
+             x:Class="VdAnagrami.MainPage" 
+             BackgroundColor="{x:Static local:Resources.Colors.PageBackground}">
     <StackLayout>
 	    <Label Text="" 
                VerticalOptions="Center" 
-               HorizontalOptions="End"  Margin="0,10,20,0" x:Name="lblSolved"/>
+               HorizontalOptions="Center"  Margin="0,10,20,0" x:Name="lblSolved" TextColor="{x:Static local:Resources.Colors.Text}"/>
 
         <Grid x:Name="gridAnagrams" Margin="10,0">
             <Grid.ColumnDefinitions>
