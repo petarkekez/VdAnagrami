@@ -27,7 +27,12 @@ namespace VdAnagrami.Data
         public AnagramRepository Anagrams { get { return anagram; } }
         public ConfigurationRepository Configuration { get { return configuration; } }
 
-        
+        public void CreateDatabase()
+        {
+            database.CreateTableAsync<Anagram>().Wait();
+            database.CreateTableAsync<Config>().Wait();
+        }
+
 
         
 

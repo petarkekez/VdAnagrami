@@ -17,6 +17,8 @@ namespace VdAnagrami
         {
             InitializeComponent();
 
+            //InitialDatabase().Wait();
+
             MainPage = new NavigationPage(new VdAnagrami.MainPage())
             {
                 BarBackgroundColor = VdAnagrami.Resources.Colors.PageBackgroundHighlight,
@@ -54,12 +56,17 @@ namespace VdAnagrami
 
         private async Task InitialDatabase()
         {
+            if (database == null)
+            {
+                database = new AnagramDatabase(DependencyService.Get<IFileHelper>().GetLocalFilePath("TodoSQLite.db3"));
+            }
+
             var anagrams = await App.Database.Anagrams.GetAsync();
 
             if (anagrams.Count == 0)
             {
                 await App.Database.Anagrams.InsertAsync(new Model.Anagram("Ep: Trka zeke", "Petar Kekez"));
-                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Nit voćni nastavnik", "Ivan Konstantinvić"));
+                await App.Database.Anagrams.InsertAsync(new Model.Anagram("Stavit vino na noćnik", "Ivan Konstantinović"));
                 await App.Database.Anagrams.InsertAsync(new Model.Anagram("Vaše tone", "Ante Ševo"));
                 await App.Database.Anagrams.InsertAsync(new Model.Anagram("Klub račić", "Luka Brčić"));
                 await App.Database.Anagrams.InsertAsync(new Model.Anagram("Vinil bića", "Ivan Bilić"));

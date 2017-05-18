@@ -14,12 +14,14 @@ namespace VdAnagrami
         {
             InitializeComponent();
             Title = "VD Anagrami";
+
+            //InitialDatabase().Wait();
         }
-        
+
         protected override async void OnAppearing()
         {
             //base.OnAppearing();
-            
+
             await InitialDatabase();
 
             await InitializeAnagrams();
@@ -27,51 +29,76 @@ namespace VdAnagrami
 
         private async Task InitializeAnagrams()
         {
-            gridAnagrams.Children.Clear();
+            //gridAnagrams.Children.Clear();
             var anagrams = await App.Database.Anagrams.GetAsync();
-            
-            var columnCount = gridAnagrams.ColumnDefinitions.Count;
-            var rowCount = gridAnagrams.RowDefinitions.Count;
-            if (rowCount == 0)
+
+            if (gridAnagrams.Children.Count == 0)
             {
-                rowCount = (anagrams.Count + columnCount - 1) / columnCount;
 
-                for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+
+                var columnCount = gridAnagrams.ColumnDefinitions.Count;
+                var rowCount = gridAnagrams.RowDefinitions.Count;
+                if (rowCount == 0)
                 {
-                    var rowDefinition = new RowDefinition();
-                    rowDefinition.Height = new GridLength(1, GridUnitType.Star);
+                    rowCount = (anagrams.Count + columnCount - 1) / columnCount;
 
-                    gridAnagrams.RowDefinitions.Add(rowDefinition);
-                }
-            }
+                    for (int rowIndex = 0; rowIndex < rowCount; rowIndex++)
+                    {
+                        var rowDefinition = new RowDefinition();
+                        rowDefinition.Height = new GridLength(1, GridUnitType.Star);
 
-            
-            int solvedCount = 0;
-            for (int i = 0; i < anagrams.Count; i++)
-            {
-                Image newImage = new Image();
-
-                if (anagrams[i].Solved == false)
-                    newImage.Source = ImageSource.FromResource("VdAnagrami.Images.Question.png");
-                else
-                {
-                    solvedCount++;
-                    newImage.Source = ImageSource.FromResource("VdAnagrami.Images.Solved.png");
+                        gridAnagrams.RowDefinitions.Add(rowDefinition);
+                    }
                 }
                 
-                newImage.GestureRecognizers.Add(new TapGestureRecognizer
+                for (int i = 0; i < anagrams.Count; i++)
                 {
-                    Command = new Command<int>((int id) =>
+                    Image newSolvedImage = new Image();
+                    newSolvedImage.Source = ImageSource.FromResource("VdAnagrami.Images.Solved.png");
+                    newSolvedImage.IsVisible = anagrams[i].Solved;
+                    newSolvedImage.GestureRecognizers.Add(new TapGestureRecognizer
                     {
-                        Navigation.PushAsync(new AnagramPage(id));
-                    }),
-                    CommandParameter = anagrams[i].ID,
-                    NumberOfTapsRequired = 1
-                });
-                 
-                gridAnagrams.Children.Add(newImage, i % columnCount, i / columnCount);
+                        Command = new Command<int>((int id) =>
+                        {
+                            Navigation.PushAsync(new AnagramPage(id));
+                        }),
+                        CommandParameter = anagrams[i].ID,
+                        NumberOfTapsRequired = 1
+                    });
+
+                    Image newUnsolvedImage = new Image();
+                    newUnsolvedImage.Source = ImageSource.FromResource("VdAnagrami.Images.Question.png");
+                    newUnsolvedImage.IsVisible = !anagrams[i].Solved;
+                    newUnsolvedImage.GestureRecognizers.Add(new TapGestureRecognizer
+                    {
+                        Command = new Command<int>((int id) =>
+                        {
+                            Navigation.PushAsync(new AnagramPage(id));
+                        }),
+                        CommandParameter = anagrams[i].ID,
+                        NumberOfTapsRequired = 1
+                    });
+
+                    gridAnagrams.Children.Add(newSolvedImage, i % columnCount, i / columnCount);
+                    gridAnagrams.Children.Add(newUnsolvedImage, i % columnCount, i / columnCount);
+                }
             }
-            lblSolved.Text = "Riješeno " + solvedCount + "/" + anagrams.Count;
+            else
+            {
+                for (int i = 0; i < anagrams.Count; i++)
+                {
+
+                    var solvedImage = (Image)gridAnagrams.Children[i * 2];
+                    var unsolvedImage = (Image)gridAnagrams.Children[i * 2 + 1];
+
+                    if (anagrams[i].Solved != solvedImage.IsVisible)
+                    {
+                        solvedImage.IsVisible = anagrams[i].Solved;
+                        unsolvedImage.IsVisible = !anagrams[i].Solved;
+                    }
+                }
+            }
+            lblSolved.Text = "Riješeno " + anagrams.Count(x => x.Solved) + "/" + anagrams.Count;
         }
 
         private async Task InitialDatabase()
