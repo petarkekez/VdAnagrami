@@ -34,7 +34,8 @@ namespace VdAnagrami
 
             if (gridAnagrams.Children.Count == 0)
             {
-
+                var imageSourceSolved = ImageSource.FromResource("VdAnagrami.Images.Solved.png");
+                var imageSourceNotSolved = ImageSource.FromResource("VdAnagrami.Images.Question.png");
 
                 var columnCount = gridAnagrams.ColumnDefinitions.Count;
                 var rowCount = gridAnagrams.RowDefinitions.Count;
@@ -54,7 +55,7 @@ namespace VdAnagrami
                 for (int i = 0; i < anagrams.Count; i++)
                 {
                     Image newSolvedImage = new Image();
-                    newSolvedImage.Source = ImageSource.FromResource("VdAnagrami.Images.Solved.png");
+                    newSolvedImage.Source = imageSourceSolved;
                     newSolvedImage.IsVisible = anagrams[i].Solved;
                     newSolvedImage.GestureRecognizers.Add(new TapGestureRecognizer
                     {
@@ -67,7 +68,7 @@ namespace VdAnagrami
                     });
 
                     Image newUnsolvedImage = new Image();
-                    newUnsolvedImage.Source = ImageSource.FromResource("VdAnagrami.Images.Question.png");
+                    newUnsolvedImage.Source = imageSourceNotSolved;
                     newUnsolvedImage.IsVisible = !anagrams[i].Solved;
                     newUnsolvedImage.GestureRecognizers.Add(new TapGestureRecognizer
                     {
