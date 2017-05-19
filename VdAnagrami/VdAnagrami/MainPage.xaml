@@ -5,9 +5,9 @@
              x:Class="VdAnagrami.MainPage" 
              BackgroundColor="{x:Static local:Resources.Colors.PageBackground}">
     <StackLayout>
-	    <Label Text="" 
+        <Label Text="" 
                VerticalOptions="Center" 
-               HorizontalOptions="Center"  Margin="0,10,20,0" x:Name="lblSolved" TextColor="{x:Static local:Resources.Colors.Text}"/>
+               HorizontalOptions="Center"  Margin="0,10,20,0" x:Name="lblSolved" TextColor="{x:Static local:Resources.Colors.TextHighlight}"/>
 
         <Grid x:Name="gridAnagrams" Margin="10,0">
             <Grid.ColumnDefinitions>
