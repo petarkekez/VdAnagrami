@@ -21,12 +21,7 @@ namespace VdAnagrami.Data
         {
             return database.Table<Anagram>().ToListAsync();
         }
-
-        //public Task<List<Anagram>> GetItemsNotDoneAsync()
-        //{
-        //    return database.QueryAsync<Anagram>("SELECT * FROM [TodoItem] WHERE [Done] = 0");
-        //}
-
+        
         public Task<Anagram> GetAsync(int id)
         {
             return database.Table<Anagram>().Where(i => i.ID == id).FirstOrDefaultAsync();
@@ -40,6 +35,18 @@ namespace VdAnagrami.Data
         public Task<int> UpdateAsync(Anagram anagram)
         {
             return database.UpdateAsync(anagram);
+        }
+
+        public Task UpdateAnagramQuestion(string originalAnagramQuestion, string newAnagramQuestion)
+        {
+            var anagram = database.Table<Anagram>().Where(i => i.Question == originalAnagramQuestion).FirstOrDefaultAsync().Result;
+            if (anagram != null)
+            {
+                anagram.Question = newAnagramQuestion;
+                return database.UpdateAsync(anagram);
+            }
+            else
+                return Task.FromResult(0);
         }
     }
 }

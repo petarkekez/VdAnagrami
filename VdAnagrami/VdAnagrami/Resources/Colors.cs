@@ -17,7 +17,8 @@ namespace VdAnagrami.Resources
         public static Color Text
         {
             //get { return Color.FromRgb(167, 163, 126); }
-            get { return Color.FromRgb(209, 219, 189); }
+            //get { return Color.FromRgb(209, 219, 189); }
+            get { return Color.FromRgb(25, 52, 65); }
         }
         public static Color PageBackground
         {
